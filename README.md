@@ -3,7 +3,7 @@
 Vamos a agregar el archivo `style.css` y modificar el HTML para que incluya este archivo de estilos.
 
 ### Estructura del Proyecto
-```
+```lua
 mi-repertorio/
 ├── public/
 │   └── style.css
