@@ -1,5 +1,29 @@
 # Mi Repertorio
 
+Vamos a agregar el archivo `style.css` y modificar el HTML para que incluya este archivo de estilos.
+
+### Estructura del Proyecto
+```
+mi-repertorio/
+├── public/
+│   └── style.css
+├── config/
+│   └── db.js
+├── controllers/
+│   └── controller.js
+├── models/
+│   └── queries.js
+├── routes/
+│   └── routes.js
+├── sql/
+│   └── repertorio.sql
+├── views/
+│   └── index.html
+├── .env
+├── index.js
+└── package.json
+```
+
 ## Descripción
 La escuela de música "E-Sueño" necesita una aplicación para gestionar las canciones que sus estudiantes cantarán en sus presentaciones en vivo. Esta aplicación es un CRUD desarrollado con Node.js, Express y PostgreSQL para administrar el repertorio de canciones.
 
