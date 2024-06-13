@@ -1,19 +1,16 @@
-// routes/routes.js
 const express = require('express');
-const router = express.Router();
 const {
-  getCancionesController,
-  insertCancionController,
-  updateCancionController,
-  deleteCancionController,
-  home
+  addSongController,
+  getSongsController,
+  updateSongController,
+  deleteSongController,
 } = require('../controllers/controller');
 
+const router = express.Router();
 
-router.get('/', home);
-router.get('/canciones', getCancionesController);
-router.post('/cancion', insertCancionController);
-router.put('/cancion/:id', updateCancionController);
-router.delete('/cancion', deleteCancionController);
+router.post('/cancion', addSongController);
+router.get('/canciones', getSongsController);
+router.put('/cancion/:id', updateSongController);
+router.delete('/cancion', deleteSongController);
 
 module.exports = router;

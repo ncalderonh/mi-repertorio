@@ -1,34 +1,32 @@
-// models/queries.js
 const pool = require('../config/db');
 
-const getCanciones = async () => {
-    const query = 'SELECT * FROM canciones ORDER BY id';
-    const { rows } = await pool.query(query);
-    return rows;
-};
-
-const insertCancion = async (titulo, artista, tono) => {
-    const query = 'INSERT INTO canciones (titulo, artista, tono) VALUES ($1, $2, $3) RETURNING *';
+const addSong = async (titulo, artista, tono) => {
+    const query = 'INSERT INTO canciones (titulo, artista, tono) VALUES ($1, $2, $3)';
     const values = [titulo, artista, tono];
-    const { rows } = await pool.query(query, values);
-    return rows[0];
+    await pool.query(query, values);
 };
 
-const updateCancion = async (id, titulo, artista, tono) => {
-    const query = 'UPDATE canciones SET titulo = $1, artista = $2, tono = $3 WHERE id = $4 RETURNING *';
+const getSongs = async () => {
+    const query = 'SELECT * FROM canciones';
+    const result = await pool.query(query);
+    return result.rows;
+};
+
+const updateSong = async (id, titulo, artista, tono) => {
+    const query = 'UPDATE canciones SET titulo = $1, artista = $2, tono = $3 WHERE id = $4';
     const values = [titulo, artista, tono, id];
-    const { rows } = await pool.query(query, values);
-    return rows[0];
+    await pool.query(query, values);
 };
 
-const deleteCancion = async (id) => {
+const deleteSong = async (id) => {
     const query = 'DELETE FROM canciones WHERE id = $1';
-    await pool.query(query, [id]);
+    const values = [id];
+    await pool.query(query, values);
 };
 
 module.exports = {
-    getCanciones,
-    insertCancion,
-    updateCancion,
-    deleteCancion
+    addSong,
+    getSongs,
+    updateSong,
+    deleteSong,
 };
