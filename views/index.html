@@ -1,43 +1,43 @@
-<!-- views/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi repertorio</title>
+  <title>Document</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
     integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
-<body style="background-color: #1a1a1a; color: white;">
+<body>
   <div id="AgregarCancion">
-    <h2 class="pt-3" style="text-align: center;">🎵 Mi repertorio 🎵</h2>
+    <h2 class="pt-3">&#119070; Mi repertorio &#119070;</h2>
 
     <div class="container pt-5 w-50">
       <div>
         <div class="form-group row">
-          <label for="cancion" class="col-sm-2 col-form-label">Canción:</label>
+          <label for="name" class="col-sm-2 col-form-label">Canción:</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="cancion" placeholder="Nombre de la canción" />
+            <input type="text" class="form-control" id="cancion" value="A dios le pido" />
           </div>
         </div>
         <div class="form-group row">
-          <label for="artista" class="col-sm-2 col-form-label">Artista:</label>
+          <label for="email" class="col-sm-2 col-form-label">Artista: </label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="artista" placeholder="Nombre del artista" />
+            <input type="text" class="form-control" id="artista" value="Juanes" />
           </div>
         </div>
         <div class="form-group row">
-          <label for="tono" class="col-sm-2 col-form-label">Tono:</label>
+          <label for="rut" class="col-sm-2 col-form-label">Tono:</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="tono" placeholder="Tono de la canción" />
+            <input type="text" class="form-control" id="tono" value="Em" />
           </div>
         </div>
         <button onclick="nuevaCancion()" id="agregar" class="m-auto btn btn-success">
           Agregar
         </button>
-        <button onclick="editarCancion()" id="editar" class="m-auto btn btn-info" style="display: none;">
+        <button onclick="editarCancion()" id="editar" class="m-auto btn btn-info">
           Editar
         </button>
       </div>
@@ -45,7 +45,8 @@
   </div>
   <div id="ListaCanciones">
     <hr />
-    <h2 style="text-align: center;">Tabla de canciones 🎸</h2>
+    <hr />
+    <h2>Tabla de canciones &#127908;</h2>
 
     <div class="container pt-5 w-75">
       <table class="table table-dark">
@@ -55,115 +56,97 @@
             <th scope="col">Canción</th>
             <th scope="col">Artista</th>
             <th scope="col">Tono</th>
-            <th scope="col">Acciones</th>
+            <th scope="col">-</th>
           </tr>
         </thead>
         <tbody id="cuerpo"></tbody>
       </table>
     </div>
   </div>
-
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script>
-    let url = "/cancion";
-    let tbody = document.getElementById("cuerpo");
-    let cancion = document.getElementById("cancion");
-    let artista = document.getElementById("artista");
-    let tono = document.getElementById("tono");
-
-    let canciones = [];
-    window.onload = getData;
-
-    async function getData() {
-      try {
-        const response = await axios.get(url + "es");
-        canciones = response.data;
-        tbody.innerHTML = "";
-        canciones.forEach((c, i) => {
-
-          tbody.innerHTML += `
-          <tr>
-            <td>${i + 1}</td>
-            <td>${c.titulo}</td>
-            <td>${c.artista}</td>
-            <td>${c.tono}</td>
-            <td>
-              <button class="btn btn-warning" onclick="prepararCancion(${i}, '${c.id}')">Editar</button>
-              <button class="btn btn-danger" onclick="eliminarCancion('${c.id}')">Eliminar</button>
-            </td>
-          </tr>
-        `;
-        });
-
-      } catch (error) {
-        console.error(error);
-        alert("Error al obtener las canciones");
-      }
-    }
-
-    function nuevaCancion() {
-      let data = {
-        titulo: cancion.value,
-        artista: artista.value,
-        tono: tono.value
-      };
-      axios.post(url, data)
-        .then(() => {
-          getData();
-          limpiarFormulario();
-        })
-        .catch(error => {
-          console.error(error);
-          alert("Error al agregar la canción");
-        });
-    }
-
-    function prepararCancion(i, id) {
-      cancion.value = canciones[i].titulo;
-      artista.value = canciones[i].artista;
-      tono.value = canciones[i].tono;
-      document.getElementById("agregar").style.display = "none";
-      document.getElementById("editar").style.display = "block";
-      document.getElementById("editar").setAttribute("onclick", `editarCancion('${id}')`);
-    }
-
-    function editarCancion(id) {
-      let data = {
-        titulo: cancion.value,
-        artista: artista.value,
-        tono: tono.value
-      };
-      axios.put(url + `/${id}`, data)
-        .then(() => {
-          getData();
-          limpiarFormulario();
-          document.getElementById("agregar").style.display = "block";
-          document.getElementById("editar").style.display = "none";
-        })
-        .catch(error => {
-          console.error(error);
-          alert("Error al editar la canción");
-        });
-    }
-
-    function eliminarCancion(id) {
-      axios.delete(url + `?id=${id}`)
-        .then(() => {
-          getData();
-          alert("Canción eliminada");
-        })
-        .catch(error => {
-          console.error(error);
-          alert("Error al eliminar la canción");
-        });
-    }
-
-    function limpiarFormulario() {
-      cancion.value = "";
-      artista.value = "";
-      tono.value = "";
-    }
-  </script>
 </body>
 
 </html>
+
+<script>
+  let url = "/cancion";
+  let tbody = document.getElementById("cuerpo");
+  let cancion = document.getElementById("cancion");
+  let artista = document.getElementById("artista");
+  let tono = document.getElementById("tono");
+
+  let canciones = [];
+  window.onload = getData();
+
+  async function getData() {
+    await axios.get(url + "es").then((data) => {
+      canciones = data.data;
+      tbody.innerHTML = "";
+      console.log(canciones)
+      canciones.forEach((c, i) => {
+        tbody.innerHTML += `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${c.titulo}</td>
+          <td>${c.artista}</td>
+          <td>${c.tono}</td>
+          <td>
+            <button class="btn btn-warning" onclick="prepararCancion(${i},'${c.id
+          }')">Editar</button>
+            <button class="btn btn-danger" onclick="eliminarCancion(${i},'${c.id
+          }')">Eliminar</button>
+          </td>
+        </tr>
+      `;
+      });
+    });
+    cancion.value = "";
+    artista.value = "";
+    tono.value = "";
+  }
+
+  function nuevaCancion() {
+    cancion;
+    artista;
+    tono;
+    let data = {
+      titulo: cancion.value,
+      artista: artista.value,
+      tono: tono.value,
+    };
+    console.log(data);
+    axios.post(url, data).then(() => getData());
+  }
+
+  function eliminarCancion(i, id) {
+    axios.delete(url + "?id=" + id).then(() => {
+      alert("Canción " + canciones[i].titulo + " eliminada");
+      getData();
+    });
+  }
+
+  function prepararCancion(i, id) {
+    cancion.value = canciones[i].titulo;
+    artista.value = canciones[i].artista;
+    tono.value = canciones[i].tono;
+    document
+      .getElementById("editar")
+      .setAttribute("onclick", `editarCancion('${id}')`);
+    document.getElementById("agregar").style.display = "none";
+    document.getElementById("editar").style.display = "block";
+  }
+
+  function editarCancion(id) {
+    axios
+      .put(url + "/" + id, {
+        titulo: cancion.value,
+        artista: artista.value,
+        tono: tono.value,
+      })
+      .then(() => {
+        getData();
+        document.getElementById("agregar").style.display = "block";
+        document.getElementById("editar").style.display = "none";
+      });
+  }
+</script>
